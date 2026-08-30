@@ -9,6 +9,9 @@
       },
       "compressor_frequency": {
         "default": "mdi:sine-wave"
+      },
+      "hwhp_capacity": {
+        "default": "mdi:water-thermometer"
       }
     },
     "switch": {
@@ -26,6 +29,26 @@
       },
       "health_mode": {
         "default": "mdi:leaf"
+      },
+      "hwhp_schedule_1": {
+        "default": "mdi:calendar-clock"
+      },
+      "hwhp_schedule_2": {
+        "default": "mdi:calendar-clock"
+      }
+    },
+    "time": {
+      "hwhp_schedule_1_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_schedule_1_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_schedule_2_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_schedule_2_end": {
+        "default": "mdi:clock-end"
       }
     }
   }

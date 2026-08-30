@@ -17,7 +17,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import DISPATCH_DEVICE_DISCOVERED
+from .const import DISPATCH_DEVICE_DISCOVERED, HWHP_PROP_SCH1_ENABLE, HWHP_PROP_SCH2_ENABLE
 from .coordinator import CloudDeviceDataUpdateCoordinator, GreeCloudConfigEntry, is_hwhp_device
 from .entity import GreeCloudEntity
 
@@ -53,6 +53,48 @@ def _set_xfan(device: Device, value: bool) -> None:
 def _set_anion(device: Device, value: bool) -> None:
     """Typed helper to set device anion property."""
     device.anion = value
+
+
+def _raw_property_setter(prop: str) -> Callable[[Device, bool], None]:
+    """Build a set_value_fn for a raw property with no typed Device setter.
+
+    Mirrors the pattern water_heater.py uses for HWHP temperature: write
+    directly into raw_properties and mark it dirty so push_state_update
+    picks it up, since these properties (Sch1/Sch2) have no typed setter on
+    the base Device class the way light/quiet/xfan etc. do.
+    """
+
+    def _set(device: Device, value: bool) -> None:
+        device.raw_properties[prop] = int(value)
+        if prop not in device._dirty:
+            device._dirty.append(prop)
+
+    return _set
+
+
+def _raw_property_getter(prop: str) -> Callable[[Device], bool]:
+    """Build a get_value_fn reading a raw property as a bool."""
+
+    def _get(device: Device) -> bool:
+        return bool(device.raw_properties.get(prop))
+
+    return _get
+
+
+GREE_CLOUD_HWHP_SWITCHES: tuple[GreeCloudSwitchEntityDescription, ...] = (
+    GreeCloudSwitchEntityDescription(
+        key="Schedule 1",
+        translation_key="hwhp_schedule_1",
+        get_value_fn=_raw_property_getter(HWHP_PROP_SCH1_ENABLE),
+        set_value_fn=_raw_property_setter(HWHP_PROP_SCH1_ENABLE),
+    ),
+    GreeCloudSwitchEntityDescription(
+        key="Schedule 2",
+        translation_key="hwhp_schedule_2",
+        get_value_fn=_raw_property_getter(HWHP_PROP_SCH2_ENABLE),
+        set_value_fn=_raw_property_setter(HWHP_PROP_SCH2_ENABLE),
+    ),
+)
 
 
 GREE_CLOUD_SWITCHES: tuple[GreeCloudSwitchEntityDescription, ...] = (
@@ -100,11 +142,12 @@ async def async_setup_entry(
     @callback
     def init_device(coordinator: CloudDeviceDataUpdateCoordinator) -> None:
         """Register the device."""
-        if is_hwhp_device(coordinator):
-            return
+        descriptions = (
+            GREE_CLOUD_HWHP_SWITCHES if is_hwhp_device(coordinator) else GREE_CLOUD_SWITCHES
+        )
         async_add_entities(
             GreeCloudSwitch(coordinator=coordinator, description=description)
-            for description in GREE_CLOUD_SWITCHES
+            for description in descriptions
         )
 
     for coordinator in entry.runtime_data.coordinators:

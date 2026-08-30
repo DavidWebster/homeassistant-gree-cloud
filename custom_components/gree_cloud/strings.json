@@ -30,6 +30,9 @@
       },
       "compressor_frequency": {
         "name": "Compressor frequency"
+      },
+      "hwhp_capacity": {
+        "name": "Hot water capacity"
       }
     },
     "switch": {
@@ -47,6 +50,26 @@
       },
       "health_mode": {
         "name": "Health mode"
+      },
+      "hwhp_schedule_1": {
+        "name": "Schedule 1"
+      },
+      "hwhp_schedule_2": {
+        "name": "Schedule 2"
+      }
+    },
+    "time": {
+      "hwhp_schedule_1_start": {
+        "name": "Schedule 1 start"
+      },
+      "hwhp_schedule_1_end": {
+        "name": "Schedule 1 end"
+      },
+      "hwhp_schedule_2_start": {
+        "name": "Schedule 2 start"
+      },
+      "hwhp_schedule_2_end": {
+        "name": "Schedule 2 end"
       }
     }
   }

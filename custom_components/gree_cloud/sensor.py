@@ -26,6 +26,8 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from .const import (
     DISPATCH_DEVICE_DISCOVERED,
     ENERGY_SCALE,
+    HWHP_PROP_CAPACITY,
+    HWHP_TEMP_ENCODING_OFFSET,
     PROP_COMPRESSOR_FREQ,
     PROP_ENERGY_TOTAL,
     PROP_HUMIDITY,
@@ -94,6 +96,36 @@ def _has_humidity(device: Device) -> bool:
     return isinstance(raw, (int, float)) and 0 < raw <= 100
 
 
+def _hwhp_capacity(device: Device) -> float | None:
+    """Return the hot water capacity/availability gauge, as a percentage.
+
+    Uses the same +100 raw encoding as temperature. Not clamped to 0-100 by
+    the device - a satisfied tank has been observed reporting 120 (20% in
+    the EWPE app), so this is passed through as-is rather than clamped.
+    """
+    raw = device.raw_properties.get(HWHP_PROP_CAPACITY)
+    if raw is None:
+        return None
+    return raw - HWHP_TEMP_ENCODING_OFFSET
+
+
+def _has_hwhp_capacity(device: Device) -> bool:
+    """Return True if the device reports the hot water capacity gauge."""
+    return device.raw_properties.get(HWHP_PROP_CAPACITY) is not None
+
+
+GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
+    GreeCloudSensorEntityDescription(
+        key="Hot Water Capacity",
+        translation_key="hwhp_capacity",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        value_fn=_hwhp_capacity,
+        exists_fn=_has_hwhp_capacity,
+    ),
+)
+
+
 GREE_CLOUD_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
     GreeCloudSensorEntityDescription(
         key="Energy",
@@ -137,12 +169,16 @@ async def async_setup_entry(
     @callback
     def init_device(coordinator: CloudDeviceDataUpdateCoordinator) -> None:
         """Register the device."""
-        # Hot water heat pumps report consumption under a different key.
-        if is_hwhp_device(coordinator):
-            return
+        # Hot water heat pumps report consumption under a different key and
+        # get their own sensor set (they have no compressor frequency or
+        # humidity sensor, but do have a hot water capacity gauge the AC
+        # sensor set has no equivalent for).
+        descriptions = (
+            GREE_CLOUD_HWHP_SENSORS if is_hwhp_device(coordinator) else GREE_CLOUD_SENSORS
+        )
         async_add_entities(
             GreeCloudSensor(coordinator=coordinator, description=description)
-            for description in GREE_CLOUD_SENSORS
+            for description in descriptions
             if description.exists_fn(coordinator.device)
         )
 
