@@ -36,6 +36,9 @@
       },
       "water_outlet_temperature": {
         "name": "Water outlet temperature"
+      },
+      "hwhp_capacity": {
+        "name": "Hot water capacity"
       }
     },
     "switch": {
@@ -56,6 +59,12 @@
       },
       "beeper": {
         "name": "Beeper"
+      },
+      "hwhp_schedule_1": {
+        "name": "Schedule 1"
+      },
+      "hwhp_schedule_2": {
+        "name": "Schedule 2"
       }
     },
     "climate": {
@@ -135,6 +144,20 @@
       },
       "defrosting": {
         "name": "Defrosting"
+      }
+    },
+    "time": {
+      "hwhp_schedule_1_start": {
+        "name": "Schedule 1 start"
+      },
+      "hwhp_schedule_1_end": {
+        "name": "Schedule 1 end"
+      },
+      "hwhp_schedule_2_start": {
+        "name": "Schedule 2 start"
+      },
+      "hwhp_schedule_2_end": {
+        "name": "Schedule 2 end"
       }
     }
   },

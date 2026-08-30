@@ -60,6 +60,9 @@
       },
       "water_outlet_temperature": {
         "default": "mdi:thermometer-water"
+      },
+      "hwhp_capacity": {
+        "default": "mdi:water-thermometer"
       }
     },
     "switch": {
@@ -83,6 +86,12 @@
         "state": {
           "off": "mdi:volume-off"
         }
+      },
+      "hwhp_schedule_1": {
+        "default": "mdi:calendar-clock"
+      },
+      "hwhp_schedule_2": {
+        "default": "mdi:calendar-clock"
       }
     },
     "select": {
@@ -121,6 +130,20 @@
         "state": {
           "on": "mdi:snowflake-melt"
         }
+      }
+    },
+    "time": {
+      "hwhp_schedule_1_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_schedule_1_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_schedule_2_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_schedule_2_end": {
+        "default": "mdi:clock-end"
       }
     }
   }

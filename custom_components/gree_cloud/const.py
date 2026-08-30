@@ -50,6 +50,25 @@ HWHP_WMOD_BOOST = 2
 HWHP_OPERATION_HEAT_PUMP = "heat_pump"  # Normal heat pump operation
 HWHP_OPERATION_BOOST = "performance"  # Boost / turbo operation
 
+# Hot water capacity/availability gauge shown in the EWPE app (the "Hot water
+# capacity %" ring). Uses the same +100 raw encoding as temperatures; unlike
+# temperature it isn't clamped to 0-100 (a satisfied/overheated tank has been
+# observed reporting 120, i.e. 20% - confirmed against the app's own display).
+HWHP_PROP_CAPACITY = "Watpercent"
+
+# Two independent on/off schedule windows (labelled "Timer" in the EWPE app).
+# Each has an enable flag and a start/end time split into hour + minute props.
+HWHP_PROP_SCH1_ENABLE = "Sch1"
+HWHP_PROP_WTMR1_START_HR = "Wtmr1StartHr"
+HWHP_PROP_WTMR1_START_MIN = "Wtmr1StartMin"
+HWHP_PROP_WTMR1_END_HR = "Wtmr1EndHr"
+HWHP_PROP_WTMR1_END_MIN = "Wtmr1EndMin"
+HWHP_PROP_SCH2_ENABLE = "Sch2"
+HWHP_PROP_WTMR2_START_HR = "Wtmr2StartHr"
+HWHP_PROP_WTMR2_START_MIN = "Wtmr2StartMin"
+HWHP_PROP_WTMR2_END_HR = "Wtmr2EndHr"
+HWHP_PROP_WTMR2_END_MIN = "Wtmr2EndMin"
+
 # Energy metering (AC units).
 # ElcAll is a cumulative counter in tenths of a kWh; it does not reset daily.
 # ElcAllConsumption carries the same value and is not read separately.
