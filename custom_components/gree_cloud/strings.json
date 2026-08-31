@@ -77,6 +77,12 @@
       },
       "hwhp_disinfect_switch": {
         "name": "Disinfect cycle"
+      },
+      "hwhp_eco_1": {
+        "name": "Eco 1"
+      },
+      "hwhp_eco_2": {
+        "name": "Eco 2"
       }
     },
     "number": {
@@ -99,6 +105,18 @@
       },
       "hwhp_schedule_2_end": {
         "name": "Schedule 2 end"
+      },
+      "hwhp_eco_1_start": {
+        "name": "Eco 1 start"
+      },
+      "hwhp_eco_1_end": {
+        "name": "Eco 1 end"
+      },
+      "hwhp_eco_2_start": {
+        "name": "Eco 2 start"
+      },
+      "hwhp_eco_2_end": {
+        "name": "Eco 2 end"
       }
     }
   }

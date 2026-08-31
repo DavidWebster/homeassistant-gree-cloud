@@ -12,6 +12,14 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
     DISPATCH_DEVICE_DISCOVERED,
+    HWHP_PROP_ECO1_END_HR,
+    HWHP_PROP_ECO1_END_MIN,
+    HWHP_PROP_ECO1_START_HR,
+    HWHP_PROP_ECO1_START_MIN,
+    HWHP_PROP_ECO2_END_HR,
+    HWHP_PROP_ECO2_END_MIN,
+    HWHP_PROP_ECO2_START_HR,
+    HWHP_PROP_ECO2_START_MIN,
     HWHP_PROP_WTMR1_END_HR,
     HWHP_PROP_WTMR1_END_MIN,
     HWHP_PROP_WTMR1_START_HR,
@@ -62,6 +70,30 @@ GREE_CLOUD_HWHP_TIMES: tuple[GreeCloudTimeEntityDescription, ...] = (
         translation_key="hwhp_schedule_2_end",
         hour_prop=HWHP_PROP_WTMR2_END_HR,
         minute_prop=HWHP_PROP_WTMR2_END_MIN,
+    ),
+    GreeCloudTimeEntityDescription(
+        key="Eco 1 Start",
+        translation_key="hwhp_eco_1_start",
+        hour_prop=HWHP_PROP_ECO1_START_HR,
+        minute_prop=HWHP_PROP_ECO1_START_MIN,
+    ),
+    GreeCloudTimeEntityDescription(
+        key="Eco 1 End",
+        translation_key="hwhp_eco_1_end",
+        hour_prop=HWHP_PROP_ECO1_END_HR,
+        minute_prop=HWHP_PROP_ECO1_END_MIN,
+    ),
+    GreeCloudTimeEntityDescription(
+        key="Eco 2 Start",
+        translation_key="hwhp_eco_2_start",
+        hour_prop=HWHP_PROP_ECO2_START_HR,
+        minute_prop=HWHP_PROP_ECO2_START_MIN,
+    ),
+    GreeCloudTimeEntityDescription(
+        key="Eco 2 End",
+        translation_key="hwhp_eco_2_end",
+        hour_prop=HWHP_PROP_ECO2_END_HR,
+        minute_prop=HWHP_PROP_ECO2_END_MIN,
     ),
 )
 
