@@ -49,15 +49,19 @@ from .const import (
     MAX_ERRORS,
     PROP_COMPRESSOR_FREQ,
     PROP_ENERGY_TOTAL,
+    PROP_FIRMWARE_VERSION,
     UPDATE_INTERVAL,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 # Extra raw properties requested from the device in addition to the standard Props enum.
-# These cover Hot Water Heat Pump (HWHP) devices that expose different sensor keys.
+# Mostly Hot Water Heat Pump (HWHP) devices that expose different sensor keys, but
+# also PROP_FIRMWARE_VERSION which applies to AC units too - it is requested here
+# because both device types are updated through the same update_state() below.
 _STANDARD_PROPS: list[str] = [x.value for x in Props]
 _HWHP_EXTRA_PROPS = [
+    PROP_FIRMWARE_VERSION,
     HWHP_PROP_WATER_TEMP,
     HWHP_PROP_SET_TEM_INT,
     HWHP_PROP_SET_TEM_DEC,
