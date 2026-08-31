@@ -72,6 +72,12 @@
       },
       "hwhp_holiday_remain": {
         "default": "mdi:calendar-range"
+      },
+      "hwhp_disinfect_status": {
+        "default": "mdi:bacteria-outline"
+      },
+      "hwhp_disinfect_remain": {
+        "default": "mdi:calendar-clock"
       }
     },
     "switch": {
@@ -104,6 +110,9 @@
       },
       "hwhp_holiday_mode": {
         "default": "mdi:bag-suitcase"
+      },
+      "hwhp_disinfect_switch": {
+        "default": "mdi:bacteria-outline"
       }
     },
     "select": {
@@ -156,6 +165,14 @@
       },
       "hwhp_schedule_2_end": {
         "default": "mdi:clock-end"
+      }
+    },
+    "number": {
+      "hwhp_disinfect_hour": {
+        "default": "mdi:clock-outline"
+      },
+      "hwhp_disinfect_cycle": {
+        "default": "mdi:calendar-refresh"
       }
     }
   }

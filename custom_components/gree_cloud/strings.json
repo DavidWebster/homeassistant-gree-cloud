@@ -48,6 +48,12 @@
       },
       "hwhp_holiday_remain": {
         "name": "Holiday remaining"
+      },
+      "hwhp_disinfect_status": {
+        "name": "Disinfect status"
+      },
+      "hwhp_disinfect_remain": {
+        "name": "Disinfect remaining"
       }
     },
     "switch": {
@@ -77,6 +83,9 @@
       },
       "hwhp_holiday_mode": {
         "name": "Holiday mode"
+      },
+      "hwhp_disinfect_switch": {
+        "name": "Disinfect cycle"
       }
     },
     "climate": {
@@ -170,6 +179,14 @@
       },
       "hwhp_schedule_2_end": {
         "name": "Schedule 2 end"
+      }
+    },
+    "number": {
+      "hwhp_disinfect_hour": {
+        "name": "Disinfect hour"
+      },
+      "hwhp_disinfect_cycle": {
+        "name": "Disinfect cycle"
       }
     }
   },
