@@ -18,6 +18,7 @@ from homeassistant.const import (
     EntityCategory,
     UnitOfEnergy,
     UnitOfFrequency,
+    UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -27,6 +28,7 @@ from .const import (
     DISPATCH_DEVICE_DISCOVERED,
     ENERGY_SCALE,
     HWHP_PROP_CAPACITY,
+    HWHP_PROP_OUTDOOR_TEMP,
     HWHP_TEMP_ENCODING_OFFSET,
     PROP_COMPRESSOR_FREQ,
     PROP_ENERGY_TOTAL,
@@ -114,6 +116,27 @@ def _has_hwhp_capacity(device: Device) -> bool:
     return device.raw_properties.get(HWHP_PROP_CAPACITY) is not None
 
 
+def _hwhp_outdoor_temp(device: Device) -> float | None:
+    """Return the outdoor ambient temperature, in degrees Celsius.
+
+    Uses the same +100 raw encoding as the other temperature properties.
+    """
+    raw = device.raw_properties.get(HWHP_PROP_OUTDOOR_TEMP)
+    if raw is None:
+        return None
+    return raw - HWHP_TEMP_ENCODING_OFFSET
+
+
+def _has_hwhp_outdoor_temp(device: Device) -> bool:
+    """Return True if the device reports the outdoor temperature.
+
+    Devices silently omit properties they do not support, so a missing key -
+    rather than a zero/offset value - is what marks the reading as
+    unavailable.
+    """
+    return device.raw_properties.get(HWHP_PROP_OUTDOOR_TEMP) is not None
+
+
 GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
     GreeCloudSensorEntityDescription(
         key="Hot Water Capacity",
@@ -122,6 +145,16 @@ GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         value_fn=_hwhp_capacity,
         exists_fn=_has_hwhp_capacity,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Outdoor Temperature",
+        translation_key="hwhp_outdoor_temp",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_hwhp_outdoor_temp,
+        exists_fn=_has_hwhp_outdoor_temp,
     ),
 )
 

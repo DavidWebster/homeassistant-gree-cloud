@@ -12,6 +12,9 @@
       },
       "hwhp_capacity": {
         "default": "mdi:water-thermometer"
+      },
+      "hwhp_outdoor_temp": {
+        "default": "mdi:sun-thermometer-outline"
       }
     },
     "switch": {

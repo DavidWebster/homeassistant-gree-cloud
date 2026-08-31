@@ -33,6 +33,9 @@
       },
       "hwhp_capacity": {
         "name": "Hot water capacity"
+      },
+      "hwhp_outdoor_temp": {
+        "name": "Outdoor temperature"
       }
     },
     "switch": {
