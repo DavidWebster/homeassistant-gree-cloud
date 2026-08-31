@@ -33,6 +33,12 @@
       },
       "hwhp_capacity": {
         "name": "Hot water capacity"
+      },
+      "hwhp_disinfect_status": {
+        "name": "Disinfect status"
+      },
+      "hwhp_disinfect_remain": {
+        "name": "Disinfect remaining"
       }
     },
     "switch": {
@@ -56,6 +62,17 @@
       },
       "hwhp_schedule_2": {
         "name": "Schedule 2"
+      },
+      "hwhp_disinfect_switch": {
+        "name": "Disinfect cycle"
+      }
+    },
+    "number": {
+      "hwhp_disinfect_hour": {
+        "name": "Disinfect hour"
+      },
+      "hwhp_disinfect_cycle": {
+        "name": "Disinfect cycle"
       }
     },
     "time": {

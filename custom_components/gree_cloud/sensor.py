@@ -27,6 +27,8 @@ from .const import (
     DISPATCH_DEVICE_DISCOVERED,
     ENERGY_SCALE,
     HWHP_PROP_CAPACITY,
+    HWHP_PROP_DISINFECT_REMAIN,
+    HWHP_PROP_DISINFECT_STATUS,
     HWHP_TEMP_ENCODING_OFFSET,
     PROP_COMPRESSOR_FREQ,
     PROP_ENERGY_TOTAL,
@@ -114,6 +116,36 @@ def _has_hwhp_capacity(device: Device) -> bool:
     return device.raw_properties.get(HWHP_PROP_CAPACITY) is not None
 
 
+def _disinfect_status(device: Device) -> float | None:
+    """Return the raw anti-legionella disinfect status code.
+
+    Only 0 has been observed so far and its meaning (e.g. 0=idle) is not
+    confirmed, so this is surfaced as an opaque diagnostic number rather than
+    an enum/binary sensor with an asserted interpretation.
+    """
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_STATUS)
+
+
+def _has_disinfect_status(device: Device) -> bool:
+    """Return True if the device reports the disinfect status property."""
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_STATUS) is not None
+
+
+def _disinfect_remain(device: Device) -> float | None:
+    """Return the raw disinfect-remaining value.
+
+    Likely days remaining until the next disinfect cycle (it matched
+    DisinfectCycle's value in the one observation available), but this is
+    not proven, so no unit or device_class is asserted.
+    """
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_REMAIN)
+
+
+def _has_disinfect_remain(device: Device) -> bool:
+    """Return True if the device reports the disinfect-remaining property."""
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_REMAIN) is not None
+
+
 GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
     GreeCloudSensorEntityDescription(
         key="Hot Water Capacity",
@@ -122,6 +154,20 @@ GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         value_fn=_hwhp_capacity,
         exists_fn=_has_hwhp_capacity,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Disinfect Status",
+        translation_key="hwhp_disinfect_status",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_disinfect_status,
+        exists_fn=_has_disinfect_status,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Disinfect Remaining",
+        translation_key="hwhp_disinfect_remain",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_disinfect_remain,
+        exists_fn=_has_disinfect_remain,
     ),
 )
 

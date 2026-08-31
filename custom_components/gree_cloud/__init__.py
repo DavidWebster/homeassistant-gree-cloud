@@ -21,6 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [
     Platform.CLIMATE,
+    Platform.NUMBER,
     Platform.SENSOR,
     Platform.SWITCH,
     Platform.TIME,

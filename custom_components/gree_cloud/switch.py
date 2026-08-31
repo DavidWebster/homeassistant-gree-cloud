@@ -17,7 +17,12 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import DISPATCH_DEVICE_DISCOVERED, HWHP_PROP_SCH1_ENABLE, HWHP_PROP_SCH2_ENABLE
+from .const import (
+    DISPATCH_DEVICE_DISCOVERED,
+    HWHP_PROP_DISINFECT_SWITCH,
+    HWHP_PROP_SCH1_ENABLE,
+    HWHP_PROP_SCH2_ENABLE,
+)
 from .coordinator import CloudDeviceDataUpdateCoordinator, GreeCloudConfigEntry, is_hwhp_device
 from .entity import GreeCloudEntity
 
@@ -93,6 +98,12 @@ GREE_CLOUD_HWHP_SWITCHES: tuple[GreeCloudSwitchEntityDescription, ...] = (
         translation_key="hwhp_schedule_2",
         get_value_fn=_raw_property_getter(HWHP_PROP_SCH2_ENABLE),
         set_value_fn=_raw_property_setter(HWHP_PROP_SCH2_ENABLE),
+    ),
+    GreeCloudSwitchEntityDescription(
+        key="Disinfect Cycle",
+        translation_key="hwhp_disinfect_switch",
+        get_value_fn=_raw_property_getter(HWHP_PROP_DISINFECT_SWITCH),
+        set_value_fn=_raw_property_setter(HWHP_PROP_DISINFECT_SWITCH),
     ),
 )
 
