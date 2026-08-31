@@ -48,6 +48,9 @@
       },
       "hwhp_disinfect_remain": {
         "name": "Disinfect remaining"
+      },
+      "hwhp_outdoor_temp": {
+        "name": "Outdoor temperature"
       }
     },
     "switch": {

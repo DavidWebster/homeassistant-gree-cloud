@@ -27,6 +27,9 @@
       },
       "hwhp_disinfect_remain": {
         "default": "mdi:calendar-clock"
+      },
+      "hwhp_outdoor_temp": {
+        "default": "mdi:sun-thermometer-outline"
       }
     },
     "switch": {
