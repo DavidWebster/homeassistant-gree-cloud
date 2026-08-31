@@ -18,6 +18,7 @@ from homeassistant.const import (
     EntityCategory,
     UnitOfEnergy,
     UnitOfFrequency,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -27,6 +28,8 @@ from .const import (
     DISPATCH_DEVICE_DISCOVERED,
     ENERGY_SCALE,
     HWHP_PROP_CAPACITY,
+    HWHP_PROP_HOLIDAY_CYCLE,
+    HWHP_PROP_HOLIDAY_REMAIN,
     HWHP_PROP_POW_CONSUMP,
     HWHP_TEMP_ENCODING_OFFSET,
     PROP_COMPRESSOR_FREQ,
@@ -133,6 +136,36 @@ def _has_hwhp_power_consumption(device: Device) -> bool:
     return device.raw_properties.get(HWHP_PROP_POW_CONSUMP) is not None
 
 
+def _hwhp_holiday_cycle(device: Device) -> float | None:
+    """Return the configured holiday mode duration.
+
+    Interpretation inferred from a single live capture (HolidayCycle=7) and
+    not confirmed by Gree documentation; assumed to be whole days, matching
+    the observed value and the "holiday" framing.
+    """
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_CYCLE)
+
+
+def _has_hwhp_holiday_cycle(device: Device) -> bool:
+    """Return True if the device reports the holiday cycle property."""
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_CYCLE) is not None
+
+
+def _hwhp_holiday_remain(device: Device) -> float | None:
+    """Return the days remaining in an active holiday period.
+
+    Interpretation inferred (not confirmed by Gree documentation); observed
+    as 0 while HolidaySwitch was off, consistent with but not proof of this
+    reading.
+    """
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_REMAIN)
+
+
+def _has_hwhp_holiday_remain(device: Device) -> bool:
+    """Return True if the device reports the holiday remaining property."""
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_REMAIN) is not None
+
+
 GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
     GreeCloudSensorEntityDescription(
         key="Hot Water Capacity",
@@ -149,6 +182,24 @@ GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=_hwhp_power_consumption,
         exists_fn=_has_hwhp_power_consumption,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Holiday Cycle",
+        translation_key="hwhp_holiday_cycle",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        value_fn=_hwhp_holiday_cycle,
+        exists_fn=_has_hwhp_holiday_cycle,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Holiday Remaining",
+        translation_key="hwhp_holiday_remain",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        value_fn=_hwhp_holiday_remain,
+        exists_fn=_has_hwhp_holiday_remain,
     ),
 )
 
