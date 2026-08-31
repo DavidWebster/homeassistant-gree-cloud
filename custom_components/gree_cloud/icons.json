@@ -12,6 +12,12 @@
       },
       "hwhp_capacity": {
         "default": "mdi:water-thermometer"
+      },
+      "hwhp_holiday_cycle": {
+        "default": "mdi:calendar-range"
+      },
+      "hwhp_holiday_remain": {
+        "default": "mdi:calendar-range"
       }
     },
     "switch": {
@@ -35,6 +41,9 @@
       },
       "hwhp_schedule_2": {
         "default": "mdi:calendar-clock"
+      },
+      "hwhp_holiday_mode": {
+        "default": "mdi:bag-suitcase"
       }
     },
     "time": {

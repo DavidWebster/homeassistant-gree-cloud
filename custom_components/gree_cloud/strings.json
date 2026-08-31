@@ -33,6 +33,12 @@
       },
       "hwhp_capacity": {
         "name": "Hot water capacity"
+      },
+      "hwhp_holiday_cycle": {
+        "name": "Holiday cycle"
+      },
+      "hwhp_holiday_remain": {
+        "name": "Holiday remaining"
       }
     },
     "switch": {
@@ -56,6 +62,9 @@
       },
       "hwhp_schedule_2": {
         "name": "Schedule 2"
+      },
+      "hwhp_holiday_mode": {
+        "name": "Holiday mode"
       }
     },
     "time": {
