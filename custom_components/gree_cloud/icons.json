@@ -113,6 +113,12 @@
       },
       "hwhp_disinfect_switch": {
         "default": "mdi:bacteria-outline"
+      },
+      "hwhp_eco_1": {
+        "default": "mdi:leaf-circle"
+      },
+      "hwhp_eco_2": {
+        "default": "mdi:leaf-circle"
       }
     },
     "select": {
@@ -164,6 +170,18 @@
         "default": "mdi:clock-start"
       },
       "hwhp_schedule_2_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_eco_1_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_eco_1_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_eco_2_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_eco_2_end": {
         "default": "mdi:clock-end"
       }
     },
