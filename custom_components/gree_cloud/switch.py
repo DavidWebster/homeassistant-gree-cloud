@@ -19,7 +19,12 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
-from .const import DISPATCH_DEVICE_DISCOVERED, HWHP_PROP_SCH1_ENABLE, HWHP_PROP_SCH2_ENABLE
+from .const import (
+    DISPATCH_DEVICE_DISCOVERED,
+    HWHP_PROP_HOLIDAY_SWITCH,
+    HWHP_PROP_SCH1_ENABLE,
+    HWHP_PROP_SCH2_ENABLE,
+)
 from .coordinator import (
     CloudDeviceDataUpdateCoordinator,
     GreeCloudConfigEntry,
@@ -100,6 +105,12 @@ GREE_CLOUD_HWHP_SWITCHES: tuple[GreeCloudSwitchEntityDescription, ...] = (
         translation_key="hwhp_schedule_2",
         get_value_fn=_raw_property_getter(HWHP_PROP_SCH2_ENABLE),
         set_value_fn=_raw_property_setter(HWHP_PROP_SCH2_ENABLE),
+    ),
+    GreeCloudSwitchEntityDescription(
+        key="Holiday Mode",
+        translation_key="hwhp_holiday_mode",
+        get_value_fn=_raw_property_getter(HWHP_PROP_HOLIDAY_SWITCH),
+        set_value_fn=_raw_property_setter(HWHP_PROP_HOLIDAY_SWITCH),
     ),
 )
 

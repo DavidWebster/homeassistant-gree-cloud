@@ -73,6 +73,13 @@ HWHP_PROP_WTMR2_END_MIN = "Wtmr2EndMin"
 # Not part of the standard Props enum, so it must be explicitly requested.
 PROP_FIRMWARE_VERSION = "ver"
 
+# Holiday mode: suspends normal heating for an extended absence. Interpretation
+# below is inferred from a single live capture (HolidaySwitch=0, HolidayCycle=7,
+# HolidayRemain=0), not confirmed by Gree documentation.
+HWHP_PROP_HOLIDAY_SWITCH = "HolidaySwitch"  # Enable flag for holiday mode
+HWHP_PROP_HOLIDAY_CYCLE = "HolidayCycle"  # Likely: configured holiday duration, in days
+HWHP_PROP_HOLIDAY_REMAIN = "HolidayRemain"  # Likely: days remaining in an active holiday period
+
 # Energy metering (AC units).
 # ElcAll is a cumulative counter in tenths of a kWh; it does not reset daily.
 # ElcAllConsumption carries the same value and is not read separately.
