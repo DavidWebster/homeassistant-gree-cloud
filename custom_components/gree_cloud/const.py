@@ -56,6 +56,10 @@ HWHP_OPERATION_BOOST = "performance"  # Boost / turbo operation
 # observed reporting 120, i.e. 20% - confirmed against the app's own display).
 HWHP_PROP_CAPACITY = "Watpercent"
 
+# Outdoor ambient temperature reading. Uses the same +100 raw encoding as
+# every other temperature-like property on this device family.
+HWHP_PROP_OUTDOOR_TEMP = "outTemp"
+
 # Two independent on/off schedule windows (labelled "Timer" in the EWPE app).
 # Each has an enable flag and a start/end time split into hour + minute props.
 HWHP_PROP_SCH1_ENABLE = "Sch1"
