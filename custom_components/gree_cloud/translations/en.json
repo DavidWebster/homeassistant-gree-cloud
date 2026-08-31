@@ -39,6 +39,9 @@
       },
       "hwhp_capacity": {
         "name": "Hot water capacity"
+      },
+      "hwhp_power_consumption": {
+        "name": "Power consumption (raw)"
       }
     },
     "switch": {

@@ -28,6 +28,7 @@ from .const import (
     DISPATCH_DEVICE_DISCOVERED,
     ENERGY_SCALE,
     HWHP_PROP_CAPACITY,
+    HWHP_PROP_POW_CONSUMP,
     HWHP_TEMP_ENCODING_OFFSET,
     POOL_PROP_IN_TEM_DEC,
     POOL_PROP_IN_TEM_INT,
@@ -121,6 +122,24 @@ def _has_hwhp_capacity(device: Device) -> bool:
     return device.raw_properties.get(HWHP_PROP_CAPACITY) is not None
 
 
+def _hwhp_power_consumption(device: Device) -> float | None:
+    """Return the raw powConsump value, unit unconfirmed.
+
+    We only ever observed one raw value for this property (1113), constant
+    across a ~15 minute capture window while other things (target temp, mode,
+    boost) were actively changing. We do NOT have confirmed evidence of its
+    scale or whether it's an instantaneous power draw or a cumulative energy
+    counter, so this is surfaced as a bare number rather than assigning a
+    device_class/unit that would assert a physical unit we can't justify.
+    """
+    return device.raw_properties.get(HWHP_PROP_POW_CONSUMP)
+
+
+def _has_hwhp_power_consumption(device: Device) -> bool:
+    """Return True if the device reports the powConsump property."""
+    return device.raw_properties.get(HWHP_PROP_POW_CONSUMP) is not None
+
+
 GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
     GreeCloudSensorEntityDescription(
         key="Hot Water Capacity",
@@ -129,6 +148,14 @@ GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         value_fn=_hwhp_capacity,
         exists_fn=_has_hwhp_capacity,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Power Consumption (raw)",
+        translation_key="hwhp_power_consumption",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=_hwhp_power_consumption,
+        exists_fn=_has_hwhp_power_consumption,
     ),
 )
 

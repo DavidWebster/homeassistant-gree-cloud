@@ -63,6 +63,9 @@
       },
       "hwhp_capacity": {
         "default": "mdi:water-thermometer"
+      },
+      "hwhp_power_consumption": {
+        "default": "mdi:flash-outline"
       }
     },
     "switch": {

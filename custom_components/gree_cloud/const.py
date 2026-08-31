@@ -69,6 +69,10 @@ HWHP_PROP_WTMR2_START_MIN = "Wtmr2StartMin"
 HWHP_PROP_WTMR2_END_HR = "Wtmr2EndHr"
 HWHP_PROP_WTMR2_END_MIN = "Wtmr2EndMin"
 
+# Firmware version string (e.g. "V3.2.M"), shared by AC and HWHP devices alike.
+# Not part of the standard Props enum, so it must be explicitly requested.
+PROP_FIRMWARE_VERSION = "ver"
+
 # Energy metering (AC units).
 # ElcAll is a cumulative counter in tenths of a kWh; it does not reset daily.
 # ElcAllConsumption carries the same value and is not read separately.

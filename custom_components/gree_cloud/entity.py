@@ -5,7 +5,7 @@ from __future__ import annotations
 from homeassistant.helpers.device_registry import DeviceInfo as HADeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, PROP_FIRMWARE_VERSION
 from .coordinator import CloudDeviceDataUpdateCoordinator
 
 
@@ -22,4 +22,5 @@ class GreeCloudEntity(CoordinatorEntity[CloudDeviceDataUpdateCoordinator]):
             name=coordinator.device.device_info.name,
             manufacturer="Gree",
             model=coordinator.device.hid or "Unknown Model",
+            sw_version=coordinator.device.raw_properties.get(PROP_FIRMWARE_VERSION),
         )
