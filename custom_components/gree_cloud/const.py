@@ -72,6 +72,16 @@ HWHP_PROP_HOLIDAY_SWITCH = "HolidaySwitch"  # Enable flag for holiday mode
 HWHP_PROP_HOLIDAY_CYCLE = "HolidayCycle"  # Likely: configured holiday duration, in days
 HWHP_PROP_HOLIDAY_REMAIN = "HolidayRemain"  # Likely: days remaining in an active holiday period
 
+# Anti-legionella disinfect cycle (periodically heats the tank above the
+# normal setpoint to kill bacteria). Confirmed real property keys from a live
+# capture (DisinfectSwitch=0, DisinfectCycle=7, DisinfectHour=12,
+# DisinfectStatus=0, DisinfectRemain=7).
+HWHP_PROP_DISINFECT_SWITCH = "DisinfectSwitch"  # Enable flag for the disinfect cycle
+HWHP_PROP_DISINFECT_CYCLE = "DisinfectCycle"  # Days between disinfect cycles
+HWHP_PROP_DISINFECT_HOUR = "DisinfectHour"  # Hour of day (0-23) to run the cycle
+HWHP_PROP_DISINFECT_STATUS = "DisinfectStatus"  # Opaque status code; only 0 observed so far
+HWHP_PROP_DISINFECT_REMAIN = "DisinfectRemain"  # Likely days remaining until next cycle (unconfirmed)
+
 # Energy metering (AC units).
 # ElcAll is a cumulative counter in tenths of a kWh; it does not reset daily.
 # ElcAllConsumption carries the same value and is not read separately.

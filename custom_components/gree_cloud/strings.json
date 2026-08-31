@@ -42,6 +42,12 @@
       },
       "hwhp_holiday_remain": {
         "name": "Holiday remaining"
+      },
+      "hwhp_disinfect_status": {
+        "name": "Disinfect status"
+      },
+      "hwhp_disinfect_remain": {
+        "name": "Disinfect remaining"
       }
     },
     "switch": {
@@ -68,6 +74,17 @@
       },
       "hwhp_holiday_mode": {
         "name": "Holiday mode"
+      },
+      "hwhp_disinfect_switch": {
+        "name": "Disinfect cycle"
+      }
+    },
+    "number": {
+      "hwhp_disinfect_hour": {
+        "name": "Disinfect hour"
+      },
+      "hwhp_disinfect_cycle": {
+        "name": "Disinfect cycle"
       }
     },
     "time": {
