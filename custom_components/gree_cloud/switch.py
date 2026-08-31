@@ -17,7 +17,13 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import DISPATCH_DEVICE_DISCOVERED, HWHP_PROP_SCH1_ENABLE, HWHP_PROP_SCH2_ENABLE
+from .const import (
+    DISPATCH_DEVICE_DISCOVERED,
+    HWHP_PROP_ECO1_ENABLE,
+    HWHP_PROP_ECO2_ENABLE,
+    HWHP_PROP_SCH1_ENABLE,
+    HWHP_PROP_SCH2_ENABLE,
+)
 from .coordinator import CloudDeviceDataUpdateCoordinator, GreeCloudConfigEntry, is_hwhp_device
 from .entity import GreeCloudEntity
 
@@ -93,6 +99,18 @@ GREE_CLOUD_HWHP_SWITCHES: tuple[GreeCloudSwitchEntityDescription, ...] = (
         translation_key="hwhp_schedule_2",
         get_value_fn=_raw_property_getter(HWHP_PROP_SCH2_ENABLE),
         set_value_fn=_raw_property_setter(HWHP_PROP_SCH2_ENABLE),
+    ),
+    GreeCloudSwitchEntityDescription(
+        key="Eco 1",
+        translation_key="hwhp_eco_1",
+        get_value_fn=_raw_property_getter(HWHP_PROP_ECO1_ENABLE),
+        set_value_fn=_raw_property_setter(HWHP_PROP_ECO1_ENABLE),
+    ),
+    GreeCloudSwitchEntityDescription(
+        key="Eco 2",
+        translation_key="hwhp_eco_2",
+        get_value_fn=_raw_property_getter(HWHP_PROP_ECO2_ENABLE),
+        set_value_fn=_raw_property_setter(HWHP_PROP_ECO2_ENABLE),
     ),
 )
 

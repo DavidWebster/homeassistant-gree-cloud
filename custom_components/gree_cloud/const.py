@@ -61,6 +61,20 @@ HWHP_PROP_WTMR2_START_MIN = "Wtmr2StartMin"
 HWHP_PROP_WTMR2_END_HR = "Wtmr2EndHr"
 HWHP_PROP_WTMR2_END_MIN = "Wtmr2EndMin"
 
+# Two independent Eco mode windows (labelled "Eco" in the EWPE app). Each has
+# an enable flag and a start/end time split into hour + minute props, mirroring
+# the schedule/"Timer" block above.
+HWHP_PROP_ECO1_ENABLE = "ECO1"
+HWHP_PROP_ECO1_START_HR = "ECO1StartHr"
+HWHP_PROP_ECO1_START_MIN = "ECO1StartMin"
+HWHP_PROP_ECO1_END_HR = "ECO1EndHr"
+HWHP_PROP_ECO1_END_MIN = "ECO1EndMin"
+HWHP_PROP_ECO2_ENABLE = "ECO2"
+HWHP_PROP_ECO2_START_HR = "ECO2StartHr"
+HWHP_PROP_ECO2_START_MIN = "ECO2StartMin"
+HWHP_PROP_ECO2_END_HR = "ECO2EndHr"
+HWHP_PROP_ECO2_END_MIN = "ECO2EndMin"
+
 # Energy metering (AC units).
 # ElcAll is a cumulative counter in tenths of a kWh; it does not reset daily.
 # ElcAllConsumption carries the same value and is not read separately.
