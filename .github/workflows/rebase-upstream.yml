@@ -1,0 +1,60 @@
+name: Rebase on upstream
+
+# Keeps this fork's main = davo22/homeassistant-gree-cloud main + our commits.
+# On a rebase conflict nothing is pushed and the run fails (GitHub emails the
+# failure); rebase manually, then push with --force-with-lease.
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # daily, 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebase-upstream
+  cancel-in-progress: false
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Rebase onto upstream and push
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/davo22/homeassistant-gree-cloud.git
+          git fetch --no-tags upstream main
+
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date with upstream." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          old=$(git rev-parse HEAD)
+          if git rebase upstream/main; then
+            git push --force-with-lease=main:"$old" origin HEAD:main
+            {
+              echo "Rebased onto upstream $(git rev-parse --short upstream/main)."
+              echo
+              git log --oneline upstream/main..HEAD
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            {
+              echo "## Rebase conflict - nothing pushed"
+              echo
+              echo "Conflicting files:"
+              git diff --name-only --diff-filter=U | sed 's/^/- /'
+              echo
+              echo "Resolve locally: git fetch upstream && git rebase upstream/main && git push --force-with-lease origin main"
+            } >> "$GITHUB_STEP_SUMMARY"
+            git rebase --abort
+            exit 1
+          fi
