@@ -18,7 +18,8 @@ concurrency:
 
 jobs:
   rebase:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # standard runner: free for public repos
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
