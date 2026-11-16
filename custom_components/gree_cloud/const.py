@@ -68,6 +68,60 @@ HWHP_PROP_DISINFECT_RUNNING = "DisinfectStatus"
 HWHP_PROP_HOLIDAY = "HolidaySwitch"
 HWHP_ERROR_PROPS = ("AllErr", "ErrHeat", "JFerr", "BwErr")
 
+# Hot water capacity/availability gauge shown in the EWPE app (the "Hot water
+# capacity %" ring). Uses the same +100 raw encoding as temperatures; unlike
+# temperature it isn't clamped to 0-100 (a satisfied/overheated tank has been
+# observed reporting 120, i.e. 20% - confirmed against the app's own display).
+HWHP_PROP_CAPACITY = "Watpercent"
+
+# Two independent on/off schedule windows (labelled "Timer" in the EWPE app).
+# Each has an enable flag and a start/end time split into hour + minute props.
+HWHP_PROP_SCH1_ENABLE = "Sch1"
+HWHP_PROP_WTMR1_START_HR = "Wtmr1StartHr"
+HWHP_PROP_WTMR1_START_MIN = "Wtmr1StartMin"
+HWHP_PROP_WTMR1_END_HR = "Wtmr1EndHr"
+HWHP_PROP_WTMR1_END_MIN = "Wtmr1EndMin"
+HWHP_PROP_SCH2_ENABLE = "Sch2"
+HWHP_PROP_WTMR2_START_HR = "Wtmr2StartHr"
+HWHP_PROP_WTMR2_START_MIN = "Wtmr2StartMin"
+HWHP_PROP_WTMR2_END_HR = "Wtmr2EndHr"
+HWHP_PROP_WTMR2_END_MIN = "Wtmr2EndMin"
+
+# Firmware version string (e.g. "V3.2.M"), shared by AC and HWHP devices alike.
+# Not part of the standard Props enum, so it must be explicitly requested.
+PROP_FIRMWARE_VERSION = "ver"
+
+# Holiday mode: suspends normal heating for an extended absence. Interpretation
+# below is inferred from a single live capture (HolidaySwitch=0, HolidayCycle=7,
+# HolidayRemain=0), not confirmed by Gree documentation.
+# The enable flag is HWHP_PROP_HOLIDAY ("HolidaySwitch") above.
+HWHP_PROP_HOLIDAY_CYCLE = "HolidayCycle"  # Likely: configured holiday duration, in days
+HWHP_PROP_HOLIDAY_REMAIN = "HolidayRemain"  # Likely: days remaining in an active holiday period
+
+# Anti-legionella disinfect cycle (periodically heats the tank above the
+# normal setpoint to kill bacteria). Confirmed real property keys from a live
+# capture (DisinfectSwitch=0, DisinfectCycle=7, DisinfectHour=12,
+# DisinfectStatus=0, DisinfectRemain=7).
+# The enable flag is HWHP_PROP_DISINFECT_ON ("DisinfectSwitch") and the status
+# HWHP_PROP_DISINFECT_RUNNING ("DisinfectStatus"), both above.
+HWHP_PROP_DISINFECT_CYCLE = "DisinfectCycle"  # Days between disinfect cycles
+HWHP_PROP_DISINFECT_HOUR = "DisinfectHour"  # Hour of day (0-23) to run the cycle
+HWHP_PROP_DISINFECT_REMAIN = "DisinfectRemain"  # Likely days remaining until next cycle (unconfirmed)
+
+# Two independent Eco mode windows (labelled "Eco" in the EWPE app). Each has
+# an enable flag and a start/end time split into hour + minute props, mirroring
+# the schedule/"Timer" block above.
+HWHP_PROP_ECO1_ENABLE = "ECO1"
+HWHP_PROP_ECO1_START_HR = "ECO1StartHr"
+HWHP_PROP_ECO1_START_MIN = "ECO1StartMin"
+HWHP_PROP_ECO1_END_HR = "ECO1EndHr"
+HWHP_PROP_ECO1_END_MIN = "ECO1EndMin"
+HWHP_PROP_ECO2_ENABLE = "ECO2"
+HWHP_PROP_ECO2_START_HR = "ECO2StartHr"
+HWHP_PROP_ECO2_START_MIN = "ECO2StartMin"
+HWHP_PROP_ECO2_END_HR = "ECO2EndHr"
+HWHP_PROP_ECO2_END_MIN = "ECO2EndMin"
+
 # Energy metering (AC units).
 # ElcAll is a cumulative counter in tenths of a kWh; it does not reset daily.
 # ElcAllConsumption carries the same value and is not read separately.
