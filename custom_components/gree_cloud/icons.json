@@ -78,6 +78,24 @@
       },
       "tank_coil_temperature": {
         "default": "mdi:coolant-temperature"
+      },
+      "hwhp_capacity": {
+        "default": "mdi:water-thermometer"
+      },
+      "hwhp_power_consumption": {
+        "default": "mdi:flash-outline"
+      },
+      "hwhp_holiday_cycle": {
+        "default": "mdi:calendar-range"
+      },
+      "hwhp_holiday_remain": {
+        "default": "mdi:calendar-range"
+      },
+      "hwhp_disinfect_status": {
+        "default": "mdi:bacteria-outline"
+      },
+      "hwhp_disinfect_remain": {
+        "default": "mdi:calendar-clock"
       }
     },
     "switch": {
@@ -101,6 +119,24 @@
         "state": {
           "off": "mdi:volume-off"
         }
+      },
+      "hwhp_schedule_1": {
+        "default": "mdi:calendar-clock"
+      },
+      "hwhp_schedule_2": {
+        "default": "mdi:calendar-clock"
+      },
+      "hwhp_holiday_mode": {
+        "default": "mdi:bag-suitcase"
+      },
+      "hwhp_disinfect_switch": {
+        "default": "mdi:bacteria-outline"
+      },
+      "hwhp_eco_1": {
+        "default": "mdi:leaf-circle"
+      },
+      "hwhp_eco_2": {
+        "default": "mdi:leaf-circle"
       }
     },
     "select": {
@@ -172,6 +208,40 @@
       },
       "holiday_mode": {
         "default": "mdi:palm-tree"
+      }
+    },
+    "time": {
+      "hwhp_schedule_1_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_schedule_1_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_schedule_2_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_schedule_2_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_eco_1_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_eco_1_end": {
+        "default": "mdi:clock-end"
+      },
+      "hwhp_eco_2_start": {
+        "default": "mdi:clock-start"
+      },
+      "hwhp_eco_2_end": {
+        "default": "mdi:clock-end"
+      }
+    },
+    "number": {
+      "hwhp_disinfect_hour": {
+        "default": "mdi:clock-outline"
+      },
+      "hwhp_disinfect_cycle": {
+        "default": "mdi:calendar-refresh"
       }
     }
   }

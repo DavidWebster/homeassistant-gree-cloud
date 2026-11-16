@@ -5,7 +5,7 @@ from __future__ import annotations
 from homeassistant.helpers.device_registry import DeviceInfo as HADeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, PROP_FIRMWARE_VERSION
 from .coordinator import CloudDeviceDataUpdateCoordinator
 
 
@@ -23,4 +23,5 @@ class GreeCloudEntity(CoordinatorEntity[CloudDeviceDataUpdateCoordinator]):
             manufacturer="Gree",
             model=("Air-to-water heat pump" if coordinator.device_kind == "heatpump"
                    else coordinator.device.hid or "Unknown Model"),
+            sw_version=coordinator.device.raw_properties.get(PROP_FIRMWARE_VERSION),
         )

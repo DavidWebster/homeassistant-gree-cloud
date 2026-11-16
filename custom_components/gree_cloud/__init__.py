@@ -29,6 +29,7 @@ PLATFORMS = [
     Platform.SELECT,
     Platform.SENSOR,
     Platform.SWITCH,
+    Platform.TIME,
     Platform.WATER_HEATER,
     Platform.NUMBER,
 ]
