@@ -19,6 +19,7 @@ from homeassistant.const import (
     UnitOfEnergy,
     UnitOfFrequency,
     UnitOfTemperature,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
@@ -32,6 +33,12 @@ from .const import (
     HWHP_PROP_COIL_TEMP,
     HWHP_PROP_DISCHARGE_TEMP,
     HWHP_PROP_OUT_EXCHANGER_TEMP,
+    HWHP_PROP_CAPACITY,
+    HWHP_PROP_POW_CONSUMP,
+    HWHP_PROP_HOLIDAY_CYCLE,
+    HWHP_PROP_HOLIDAY_REMAIN,
+    HWHP_PROP_DISINFECT_REMAIN,
+    HWHP_PROP_DISINFECT_RUNNING,
     HWHP_PROP_OUTDOOR_TEMP,
     HWHP_TEMP_ENCODING_OFFSET,
     POOL_PROP_IN_TEM_DEC,
@@ -150,6 +157,154 @@ def _offset_sensor(
         value_fn=value,
         exists_fn=lambda device: value(device) is not None,
     )
+
+
+def _hwhp_capacity(device: Device) -> float | None:
+    """Return the hot water capacity/availability gauge, as a percentage.
+
+    Uses the same +100 raw encoding as temperature. Not clamped to 0-100 by
+    the device - a satisfied tank has been observed reporting 120 (20% in
+    the EWPE app), so this is passed through as-is rather than clamped.
+    """
+    raw = device.raw_properties.get(HWHP_PROP_CAPACITY)
+    if raw is None:
+        return None
+    return raw - HWHP_TEMP_ENCODING_OFFSET
+
+
+def _has_hwhp_capacity(device: Device) -> bool:
+    """Return True if the device reports the hot water capacity gauge."""
+    return device.raw_properties.get(HWHP_PROP_CAPACITY) is not None
+
+
+def _hwhp_power_consumption(device: Device) -> float | None:
+    """Return the raw powConsump value, unit unconfirmed.
+
+    We only ever observed one raw value for this property (1113), constant
+    across a ~15 minute capture window while other things (target temp, mode,
+    boost) were actively changing. We do NOT have confirmed evidence of its
+    scale or whether it's an instantaneous power draw or a cumulative energy
+    counter, so this is surfaced as a bare number rather than assigning a
+    device_class/unit that would assert a physical unit we can't justify.
+    """
+    return device.raw_properties.get(HWHP_PROP_POW_CONSUMP)
+
+
+def _has_hwhp_power_consumption(device: Device) -> bool:
+    """Return True if the device reports the powConsump property."""
+    return device.raw_properties.get(HWHP_PROP_POW_CONSUMP) is not None
+
+
+def _hwhp_holiday_cycle(device: Device) -> float | None:
+    """Return the configured holiday mode duration.
+
+    Interpretation inferred from a single live capture (HolidayCycle=7) and
+    not confirmed by Gree documentation; assumed to be whole days, matching
+    the observed value and the "holiday" framing.
+    """
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_CYCLE)
+
+
+def _has_hwhp_holiday_cycle(device: Device) -> bool:
+    """Return True if the device reports the holiday cycle property."""
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_CYCLE) is not None
+
+
+def _hwhp_holiday_remain(device: Device) -> float | None:
+    """Return the days remaining in an active holiday period.
+
+    Interpretation inferred (not confirmed by Gree documentation); observed
+    as 0 while HolidaySwitch was off, consistent with but not proof of this
+    reading.
+    """
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_REMAIN)
+
+
+def _has_hwhp_holiday_remain(device: Device) -> bool:
+    """Return True if the device reports the holiday remaining property."""
+    return device.raw_properties.get(HWHP_PROP_HOLIDAY_REMAIN) is not None
+
+
+def _disinfect_status(device: Device) -> float | None:
+    """Return the raw anti-legionella disinfect status code.
+
+    Only 0 has been observed so far and its meaning (e.g. 0=idle) is not
+    confirmed, so this is surfaced as an opaque diagnostic number rather than
+    an enum/binary sensor with an asserted interpretation.
+    """
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_RUNNING)
+
+
+def _has_disinfect_status(device: Device) -> bool:
+    """Return True if the device reports the disinfect status property."""
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_RUNNING) is not None
+
+
+def _disinfect_remain(device: Device) -> float | None:
+    """Return the raw disinfect-remaining value.
+
+    Likely days remaining until the next disinfect cycle (it matched
+    DisinfectCycle's value in the one observation available), but this is
+    not proven, so no unit or device_class is asserted.
+    """
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_REMAIN)
+
+
+def _has_disinfect_remain(device: Device) -> bool:
+    """Return True if the device reports the disinfect-remaining property."""
+    return device.raw_properties.get(HWHP_PROP_DISINFECT_REMAIN) is not None
+
+
+GREE_CLOUD_HWHP_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
+    GreeCloudSensorEntityDescription(
+        key="Hot Water Capacity",
+        translation_key="hwhp_capacity",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        value_fn=_hwhp_capacity,
+        exists_fn=_has_hwhp_capacity,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Power Consumption (raw)",
+        translation_key="hwhp_power_consumption",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=_hwhp_power_consumption,
+        exists_fn=_has_hwhp_power_consumption,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Holiday Cycle",
+        translation_key="hwhp_holiday_cycle",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        value_fn=_hwhp_holiday_cycle,
+        exists_fn=_has_hwhp_holiday_cycle,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Holiday Remaining",
+        translation_key="hwhp_holiday_remain",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        value_fn=_hwhp_holiday_remain,
+        exists_fn=_has_hwhp_holiday_remain,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Disinfect Status",
+        translation_key="hwhp_disinfect_status",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_disinfect_status,
+        exists_fn=_has_disinfect_status,
+    ),
+    GreeCloudSensorEntityDescription(
+        key="Disinfect Remaining",
+        translation_key="hwhp_disinfect_remain",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=_disinfect_remain,
+        exists_fn=_has_disinfect_remain,
+    ),
+)
 
 
 GREE_CLOUD_SENSORS: tuple[GreeCloudSensorEntityDescription, ...] = (
@@ -302,7 +457,7 @@ async def async_setup_entry(
             entry.async_on_unload(coordinator.async_add_listener(add_new_sensors))
             return
         if is_hwhp_device(coordinator):
-            descriptions = HWHP_SENSORS
+            descriptions = HWHP_SENSORS + GREE_CLOUD_HWHP_SENSORS
         elif is_pool_device(coordinator):
             descriptions = POOL_SENSORS
         else:
