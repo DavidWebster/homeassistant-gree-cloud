@@ -27,10 +27,30 @@ async def unit(cloud, setup_integration) -> FakeUnit:
 async def test_it_is_a_water_heater_not_an_air_conditioner(
     hass: HomeAssistant, cloud, unit: FakeUnit
 ) -> None:
-    """A unit that reports a tank temperature gets no climate entity or AC switches."""
+    """A unit that reports a tank temperature gets no climate entity or AC switches.
+
+    Fork: the only switches are the hot water schedule, eco, holiday and
+    disinfect switches.
+    """
     assert hass.states.async_entity_ids("climate") == []
-    assert hass.states.async_entity_ids("switch") == []
+    assert sorted(hass.states.async_entity_ids("switch")) == [
+        "switch.water_heater_disinfect_cycle",
+        "switch.water_heater_eco_1",
+        "switch.water_heater_eco_2",
+        "switch.water_heater_holiday_mode",
+        "switch.water_heater_schedule_1",
+        "switch.water_heater_schedule_2",
+    ]
     assert hass.states.async_entity_ids("water_heater") == [HEATER]
+
+
+async def test_firmware_version_is_a_string(
+    hass: HomeAssistant, cloud, setup_integration, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Fork: ``ver`` arrives as a number; Home Assistant 2026.12 rejects a non-string sw_version."""
+    cloud.add("hwhp")
+    await setup_integration()
+    assert "as sw_version" not in caplog.text
 
 
 async def test_target_temperature(hass: HomeAssistant, cloud, unit: FakeUnit, poll) -> None:
